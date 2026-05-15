@@ -52,29 +52,35 @@ body{display:flex;justify-content:center;align-items:flex-start}
    ════════════════════════════════════════════ */
 @media(max-width:767px){
 
-  /* ── structural shell ── */
-  #room{max-width:100%;border-radius:0}
-  #top-pin{flex-shrink:0;display:flex;flex-direction:column}
-  #middle-wrap{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;flex-direction:column}
+  /* ── structural shell: room is flex-col, top-pin grows, middle fixed ── */
+  #room{max-width:100%;border-radius:0;display:flex;flex-direction:column;overflow:hidden}
+  #top-pin{flex:1;min-height:0;display:flex;flex-direction:column}
+  #middle-wrap{
+    flex-shrink:0;
+    max-height:320px;
+    overflow-y:auto;overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    display:flex;flex-direction:column
+  }
   #middle-wrap::-webkit-scrollbar{display:none}
 
   /* ── header ── */
-  #header{height:46px;padding:0 12px}
+  #header{height:46px;padding:0 12px;flex-shrink:0}
   #game-title{font-size:22px}
   #balance-amount{font-size:13px}
   #round-badge,#live-dot{font-size:8px}
 
-  /* ── hide everything that was below the video ── */
+  /* ── hide panels not needed on mobile ── */
   #stage-bar{display:none}
   #stats-row{display:none !important}
   #history-wrap{display:none}
   #mult-row{display:none !important}
 
-  /* ── scene: tall, full-width ── */
-  #left-col{flex-shrink:0}
+  /* ── scene: fills all remaining space in top-pin ── */
+  #left-col{flex:1;min-height:0;display:flex;flex-direction:column}
   #scene-wrap{
-    height:clamp(300px,52vh,400px);
-    background:#070707;flex-shrink:0;
+    flex:1;min-height:200px;
+    background:#070707;
     position:relative;overflow:hidden;z-index:5
   }
   .scene-media{object-fit:cover;object-position:center 40%}
@@ -139,7 +145,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #mob-info-bar{
     display:flex;align-items:center;
     background:#1a1c25;border-bottom:1px solid var(--border-dim);
-    height:44px;flex-shrink:0;padding:0 12px;gap:0
+    height:42px;flex-shrink:0;padding:0 12px;gap:0
   }
   /* heat section */
   #mob-info-heat{display:flex;flex-direction:column;gap:2px;flex-shrink:0;padding-right:12px;border-right:1px solid var(--border-dim)}
@@ -149,8 +155,8 @@ body{display:flex;justify-content:center;align-items:flex-start}
   .mob-pip.lit-warn{background:#ff8800}
   .mob-pip.lit-hot{background:var(--red)}
   .mob-pip.lit-crit{background:var(--red);box-shadow:0 0 3px var(--red)}
-  #mob-heat-stage{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;line-height:1}
-  #mob-heat-stage.danger{color:var(--red)}
+  #mob-heat-stage{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--gold) !important;text-transform:uppercase;line-height:1;display:block !important}
+  #mob-heat-stage.danger{color:var(--red) !important}
   /* stats section */
   #mob-info-stats{display:flex;align-items:center;gap:0;flex:1;padding:0 12px}
   .mob-info-stat{display:flex;flex-direction:column;align-items:center;flex:1}
@@ -199,7 +205,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #markets-cells .market-cell{
     display:flex !important;flex-direction:row !important;align-items:center !important;
     justify-content:space-between !important;gap:8px !important;
-    padding:0 12px !important;height:38px !important;min-height:38px !important;
+    padding:0 12px !important;height:34px !important;min-height:34px !important;
     background:transparent !important;border:none !important;
     border-bottom:1px solid rgba(255,255,255,0.06) !important;
     border-radius:0 !important;grid-template-areas:unset !important
@@ -329,7 +335,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #header{height:44px;padding:0 10px}
   #game-title{font-size:20px}
   #balance-amount{font-size:12px}
-  #scene-wrap{height:clamp(290px,52vh,360px)}
+  #scene-wrap{height:clamp(300px,50svh,370px)}
   #mob-mult-val{font-size:44px}
   #live-3col{grid-template-columns:60px minmax(110px,1fr) 66px;gap:4px}
   #escape-btn .btn-main{font-size:23px}
@@ -844,13 +850,14 @@ body{display:flex;justify-content:center;align-items:flex-start}
   <div id="history-wrap"><div id="history-strip"></div></div>
 
   </div><!-- /#left-col -->
-  </div><!-- /#top-pin -->
 
   <div id="mobile-tabs" aria-label="Mobile sections">
     <button class="mobile-tab active" type="button" data-tab="live">Live</button>
     <button class="mobile-tab" type="button" data-tab="crew">Crew</button>
     <button class="mobile-tab" type="button" data-tab="history">History</button>
   </div>
+
+  </div><!-- /#top-pin -->
 
   <!-- MIDDLE (scrollable): feed + crew + markets -->
   <div id="middle-wrap">
