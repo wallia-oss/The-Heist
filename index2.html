@@ -39,7 +39,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
 #feed-activity-row{display:none}
 #crew-row{display:none}
 #markets-row{display:none}
-#mob-stage-bar,#mob-mult-block,#mob-heat-block,#mob-stats-strip{display:none}
+#mob-stage-bar,#mob-mult-block,#mob-info-bar{display:none}
 
 /* Pinned bottom — always visible */
 #bottom-panel{position:relative;flex-shrink:0;padding:8px 10px calc(10px + env(safe-area-inset-bottom, 0px));background:#343743;border-top:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;z-index:120}
@@ -64,126 +64,114 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #balance-amount{font-size:13px}
   #round-badge,#live-dot{font-size:8px}
 
-  /* ── hide everything that moves below the video ── */
+  /* ── hide everything that was below the video ── */
   #stage-bar{display:none}
   #stats-row{display:none !important}
   #history-wrap{display:none}
-  /* hide desktop mult-row — replaced by mob-mult-block overlay */
   #mult-row{display:none !important}
 
-  /* ── scene: tall, full-width, all info overlaid ── */
+  /* ── scene: tall, full-width ── */
   #left-col{flex-shrink:0}
   #scene-wrap{
-    height:clamp(280px,50vh,380px);
+    height:clamp(300px,52vh,400px);
     background:#070707;flex-shrink:0;
     position:relative;overflow:hidden;z-index:5
   }
-  .scene-media{object-fit:cover;object-position:center 46%}
-  #scene-live,#scene-cleared{object-position:center 48%}
-  #scene-catch{object-position:center 44%}
+  .scene-media{object-fit:cover;object-position:center 40%}
+  #scene-live,#scene-cleared{object-position:center 44%}
+  #scene-catch{object-position:center 40%}
 
-  /* vignette: dark top and bottom for text readability */
+  /* vignette: subtle top, strong bottom-centre for mult readability */
   #scene-vignette{
-    background:linear-gradient(180deg,
-      rgba(15,16,22,0.7) 0%,
-      transparent 22%,
-      transparent 48%,
-      rgba(15,16,22,0.55) 72%,
-      rgba(15,16,22,0.88) 88%,
-      rgba(15,16,22,0.97) 100%) !important;
+    background:
+      linear-gradient(180deg,rgba(15,16,22,0.6) 0%,transparent 18%,transparent 100%) !important;
     z-index:4
   }
+  /* radial dark behind multiplier for legibility */
+  #scene-wrap::after{
+    content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+    background:radial-gradient(ellipse 70% 45% at 50% 58%,rgba(10,11,18,0.65) 0%,transparent 100%)
+  }
 
-  /* ── TOP overlay: stage pill ── */
+  /* ── TOP overlay: stage pill top-right ── */
   #mob-stage-bar{
-    display:flex;align-items:center;gap:8px;
-    position:absolute;top:8px;left:10px;right:10px;
-    z-index:10;pointer-events:none
+    position:absolute;top:8px;right:10px;
+    z-index:10;pointer-events:none;display:flex
   }
   #mob-stage-pill{
     font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
     letter-spacing:0.14em;text-transform:uppercase;
-    background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);
+    background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.2);
     border-radius:3px;padding:3px 8px;color:var(--text-muted)
   }
-  #mob-stage-pill.s-safe{color:var(--safe);border-color:rgba(0,224,112,0.4)}
-  #mob-stage-pill.s-warn{color:#ff8800;border-color:rgba(255,136,0,0.4)}
-  #mob-stage-pill.s-hot{color:var(--red);border-color:rgba(255,51,51,0.4)}
-  #mob-stage-pill.s-crit{color:var(--red);border-color:rgba(255,51,51,0.6);animation:pillPulse 0.8s infinite alternate}
-  @keyframes pillPulse{from{opacity:1}to{opacity:0.55}}
+  #mob-stage-pill.s-safe{color:var(--safe);border-color:rgba(0,224,112,0.5)}
+  #mob-stage-pill.s-warn{color:#ff8800;border-color:rgba(255,136,0,0.5)}
+  #mob-stage-pill.s-hot{color:var(--red);border-color:rgba(255,51,51,0.5)}
+  #mob-stage-pill.s-crit{color:var(--red);border-color:rgba(255,51,51,0.7);animation:pillPulse 0.7s infinite alternate}
+  @keyframes pillPulse{from{opacity:1}to{opacity:0.45}}
 
-  /* ── BOTTOM-LEFT: multiplier ── */
+  /* ── CENTRE: multiplier hero — the game ── */
   #mob-mult-block{
-    position:absolute;bottom:38px;left:10px;
-    z-index:10;pointer-events:none;line-height:1
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-54%);
+    z-index:10;pointer-events:none;
+    text-align:center;line-height:1
   }
   #mob-mult-val{
     font-family:'Bebas Neue',sans-serif;
-    font-size:clamp(48px,14vw,60px);
+    font-size:clamp(72px,20vw,96px);
     letter-spacing:0.02em;line-height:1;
     color:var(--safe);
-    text-shadow:0 2px 20px rgba(0,0,0,0.9);
-    transition:color 0.3s
+    text-shadow:0 0 40px rgba(0,224,112,0.5),0 3px 24px rgba(0,0,0,0.95);
+    transition:color 0.3s,text-shadow 0.3s
   }
-  #mob-mult-val.danger{color:var(--danger)}
-  #mob-mult-val.warning{color:#ff8800}
+  #mob-mult-val.danger{color:var(--danger);text-shadow:0 0 40px rgba(255,85,51,0.5),0 3px 24px rgba(0,0,0,0.95)}
+  #mob-mult-val.warning{color:#ff8800;text-shadow:0 0 40px rgba(255,136,0,0.4),0 3px 24px rgba(0,0,0,0.95)}
   #mob-mult-val.escaped{color:var(--safe)}
   #mob-mult-lbl{
-    font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
-    letter-spacing:0.18em;color:rgba(255,255,255,0.55);text-transform:uppercase;
-    text-shadow:0 1px 6px rgba(0,0,0,0.9);margin-top:1px
+    font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+    letter-spacing:0.22em;color:rgba(255,255,255,0.45);text-transform:uppercase;
+    text-shadow:0 1px 8px rgba(0,0,0,0.9);margin-top:4px
   }
 
-  /* ── BOTTOM-RIGHT: heat ── */
-  #mob-heat-block{
-    position:absolute;bottom:42px;right:10px;
-    z-index:10;pointer-events:none;
-    display:flex;flex-direction:column;align-items:flex-end;gap:3px
+  /* ── INFO BAR: below video, above tabs ── */
+  #mob-info-bar{
+    display:flex;align-items:center;
+    background:#1a1c25;border-bottom:1px solid var(--border-dim);
+    height:44px;flex-shrink:0;padding:0 12px;gap:0
   }
-  #mob-heat-pips{display:flex;gap:2px;align-items:center}
-  .mob-pip{width:10px;height:5px;border-radius:1px;background:rgba(255,255,255,0.12);transition:background 0.3s}
+  /* heat section */
+  #mob-info-heat{display:flex;flex-direction:column;gap:2px;flex-shrink:0;padding-right:12px;border-right:1px solid var(--border-dim)}
+  #mob-heat-pips{display:flex;gap:2px}
+  .mob-pip{width:9px;height:4px;border-radius:1px;background:rgba(255,255,255,0.1);transition:background 0.3s}
   .mob-pip.lit-safe{background:var(--safe)}
   .mob-pip.lit-warn{background:#ff8800}
   .mob-pip.lit-hot{background:var(--red)}
-  .mob-pip.lit-crit{background:var(--red);box-shadow:0 0 4px var(--red)}
-  #mob-heat-stage{
-    font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-    letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;
-    text-shadow:0 1px 8px rgba(0,0,0,0.9)
-  }
+  .mob-pip.lit-crit{background:var(--red);box-shadow:0 0 3px var(--red)}
+  #mob-heat-stage{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;line-height:1}
   #mob-heat-stage.danger{color:var(--red)}
-  #mob-heat-sub{font-size:9px;color:rgba(255,255,255,0.55);text-align:right;text-shadow:0 1px 6px rgba(0,0,0,0.9)}
-
-  /* ── BOTTOM STRIP: escaped · in vault · chart ── */
-  #mob-stats-strip{
-    position:absolute;bottom:0;left:0;right:0;
-    z-index:10;pointer-events:none;
-    display:flex;align-items:center;
-    padding:4px 10px 5px;gap:0;
-    background:rgba(15,16,22,0.6);
-    border-top:1px solid rgba(255,255,255,0.08)
-  }
-  .mob-stat{display:flex;flex-direction:column;align-items:flex-start;flex:1;padding-right:8px}
-  .mob-stat-lbl{font-size:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.45);text-transform:uppercase;line-height:1}
-  .mob-stat-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:0.02em;line-height:1.1}
-  .mob-stat-sub{font-size:8px;color:rgba(255,255,255,0.4);line-height:1}
-  #mob-chart-col{flex:1;display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-  #mob-chart-svg{width:80px;height:28px;flex-shrink:0}
-  #mob-exits-val{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--safe);letter-spacing:0.04em;line-height:1}
-
-  /* hide mobile overlay elements on desktop — they're display:none by default via base rule below */
-  #mob-stage-bar,#mob-mult-block,#mob-heat-block,#mob-stats-strip{display:none}
+  /* stats section */
+  #mob-info-stats{display:flex;align-items:center;gap:0;flex:1;padding:0 12px}
+  .mob-info-stat{display:flex;flex-direction:column;align-items:center;flex:1}
+  .mob-info-lbl{font-size:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;line-height:1}
+  .mob-info-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:0.02em;line-height:1.1}
+  .mob-info-divider{width:1px;height:28px;background:var(--border-dim);flex-shrink:0}
+  /* chart section */
+  #mob-info-chart{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex-shrink:0;padding-left:10px;border-left:1px solid var(--border-dim)}
+  #mob-chart-svg{width:60px;height:22px}
+  #mob-exits-val{font-family:'Bebas Neue',sans-serif;font-size:12px;color:var(--safe);letter-spacing:0.04em;line-height:1}
 
   /* ── 3-tab bar ── */
-  #mobile-tabs{display:grid;grid-template-columns:repeat(3,1fr);flex-shrink:0;background:#1e2029;border-bottom:1px solid var(--border-dim)}
+  #mobile-tabs{display:grid;grid-template-columns:repeat(3,1fr);flex-shrink:0;background:#1a1c25;border-bottom:1px solid var(--border-dim)}
   .mobile-tab{height:36px;border:0;border-right:1px solid var(--border-dim);background:transparent;color:var(--text-muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
   .mobile-tab:last-child{border-right:0}
   .mobile-tab.active{color:var(--gold-bright);background:rgba(255,216,90,0.06);box-shadow:inset 0 -2px 0 var(--gold)}
 
-  /* show mobile overlay elements only on mobile */
-  #mob-stage-bar,#mob-mult-block,#mob-heat-block,#mob-stats-strip{display:flex}
+  /* show mobile-only elements */
   #mob-stage-bar{display:flex}
   #mob-mult-block{display:block}
+  #mob-info-bar{display:flex}
 
   /* ── default: hide all middle sections ── */
   #feed-activity-row,#live-bets-panel,#crew-row,#markets-row,#mobile-history-panel{display:none}
@@ -341,7 +329,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #header{height:44px;padding:0 10px}
   #game-title{font-size:20px}
   #balance-amount{font-size:12px}
-  #scene-wrap{height:clamp(260px,48vh,340px)}
+  #scene-wrap{height:clamp(290px,52vh,360px)}
   #mob-mult-val{font-size:44px}
   #live-3col{grid-template-columns:60px minmax(110px,1fr) 66px;gap:4px}
   #escape-btn .btn-main{font-size:23px}
@@ -658,6 +646,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #left-col{grid-column:1;grid-row:3/5;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
   #left-col #scene-wrap{flex:1 1 auto;min-height:190px;height:auto;overflow:hidden}
   #left-col #mult-row{display:flex;position:relative;bottom:auto;left:auto;right:auto;flex-shrink:0;padding:10px 14px;background:#30333f !important;border-bottom:1px solid var(--border-dim) !important;pointer-events:auto;z-index:auto}
+  #mob-info-bar,#mob-stage-bar,#mob-mult-block{display:none !important}
   #left-col #stats-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;flex-shrink:0}
   #left-col #history-wrap{display:flex;flex-shrink:0}
   #stat-loot,#stat-avg{display:flex}
@@ -768,53 +757,15 @@ body{display:flex;justify-content:center;align-items:flex-start}
     <div id="scene-heat-wash"></div>
     <div id="scene-vignette"></div>
 
-    <!-- MOBILE OVERLAYS — all positioned absolutely on the video -->
-    <!-- Top bar: stage pill -->
+    <!-- MOBILE: stage pill top-right -->
     <div id="mob-stage-bar">
       <span id="mob-stage-pill"></span>
     </div>
 
-    <!-- Bottom-left: multiplier -->
+    <!-- MOBILE: multiplier centered on video — the hero number -->
     <div id="mob-mult-block">
       <div id="mob-mult-val">1.00×</div>
       <div id="mob-mult-lbl">MULTIPLIER</div>
-    </div>
-
-    <!-- Bottom-right: heat -->
-    <div id="mob-heat-block">
-      <div id="mob-heat-pips">
-        <div class="mob-pip" id="mp0"></div><div class="mob-pip" id="mp1"></div>
-        <div class="mob-pip" id="mp2"></div><div class="mob-pip" id="mp3"></div>
-        <div class="mob-pip" id="mp4"></div><div class="mob-pip" id="mp5"></div>
-        <div class="mob-pip" id="mp6"></div><div class="mob-pip" id="mp7"></div>
-      </div>
-      <div id="mob-heat-stage"></div>
-      <div id="mob-heat-sub"></div>
-    </div>
-
-    <!-- Bottom strip: escaped · in vault · chart · exits/sec -->
-    <div id="mob-stats-strip">
-      <div class="mob-stat">
-        <span class="mob-stat-lbl">🏃 ESCAPED</span>
-        <span class="mob-stat-val" id="mob-val-escaped">0</span>
-        <span class="mob-stat-sub" id="mob-val-escaped-pct">0%</span>
-      </div>
-      <div class="mob-stat">
-        <span class="mob-stat-lbl">🔒 IN VAULT</span>
-        <span class="mob-stat-val" id="mob-val-inside">1,000</span>
-        <span class="mob-stat-sub" id="mob-val-inside-pct">100%</span>
-      </div>
-      <div id="mob-chart-col">
-        <svg id="mob-chart-svg" viewBox="0 0 80 28" preserveAspectRatio="none">
-          <defs><linearGradient id="mob-chart-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#00e070" stop-opacity="0.35"/>
-            <stop offset="100%" stop-color="#00e070" stop-opacity="0.02"/>
-          </linearGradient></defs>
-          <path id="mob-chart-fill" d="M0,28 L80,28 Z" fill="url(#mob-chart-grad)"/>
-          <path id="mob-chart-line" d="M0,28 L80,28" fill="none" stroke="#00e070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span id="mob-exits-val">0</span>
-      </div>
     </div>
 
     <div id="scene-live-badge">
@@ -823,7 +774,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
     </div>
     <div id="spectate-banner">✓ ESCAPED — WATCHING</div>
 
-    <!-- MULT + HEAT (desktop only — hidden on mobile) -->
+    <!-- MULT + HEAT (desktop only) -->
     <div id="mult-row">
       <div>
         <div id="multiplier-value">1.00×</div>
@@ -845,6 +796,41 @@ body{display:flex;justify-content:center;align-items:flex-start}
       </div>
     </div>
   </div><!-- /#scene-wrap -->
+
+  <!-- MOBILE INFO BAR: heat + stats + chart — sits below video, above tabs -->
+  <div id="mob-info-bar">
+    <div id="mob-info-heat">
+      <div id="mob-heat-pips">
+        <div class="mob-pip" id="mp0"></div><div class="mob-pip" id="mp1"></div>
+        <div class="mob-pip" id="mp2"></div><div class="mob-pip" id="mp3"></div>
+        <div class="mob-pip" id="mp4"></div><div class="mob-pip" id="mp5"></div>
+        <div class="mob-pip" id="mp6"></div><div class="mob-pip" id="mp7"></div>
+      </div>
+      <div id="mob-heat-stage"></div>
+    </div>
+    <div id="mob-info-stats">
+      <div class="mob-info-stat">
+        <span class="mob-info-lbl">ESCAPED</span>
+        <span class="mob-info-val" id="mob-val-escaped">0</span>
+      </div>
+      <div class="mob-info-divider"></div>
+      <div class="mob-info-stat">
+        <span class="mob-info-lbl">IN VAULT</span>
+        <span class="mob-info-val" id="mob-val-inside">1,000</span>
+      </div>
+    </div>
+    <div id="mob-info-chart">
+      <svg id="mob-chart-svg" viewBox="0 0 64 24" preserveAspectRatio="none">
+        <defs><linearGradient id="mob-chart-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#00e070" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#00e070" stop-opacity="0.02"/>
+        </linearGradient></defs>
+        <path id="mob-chart-fill" d="M0,24 L64,24 Z" fill="url(#mob-chart-grad)"/>
+        <path id="mob-chart-line" d="M0,24 L64,24" fill="none" stroke="#00e070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span id="mob-exits-val">0</span>
+    </div>
+  </div>
 
   <!-- STATS -->
   <div id="stats-row">
@@ -1168,10 +1154,9 @@ const el={
   sceneHeatWash:$('scene-heat-wash'),stageIndicator:$('stage-indicator'),roundNum:$('round-num'),sceneEyeCount:$('scene-eye-count'),
   yourBetVal:$('your-bet-val'),escapesPmVal:$('escapes-pm-val'),activityLine:$('activity-line'),activityFill:$('activity-fill'),
   // mobile overlay elements
-  mobMultVal:$('mob-mult-val'),mobHeatStage:$('mob-heat-stage'),mobHeatSub:$('mob-heat-sub'),
+  mobMultVal:$('mob-mult-val'),mobHeatStage:$('mob-heat-stage'),
   mobStagePill:$('mob-stage-pill'),
   mobValEscaped:$('mob-val-escaped'),mobValInside:$('mob-val-inside'),
-  mobValEscapedPct:$('mob-val-escaped-pct'),mobValInsidePct:$('mob-val-inside-pct'),
   mobExitsVal:$('mob-exits-val'),mobChartLine:$('mob-chart-line'),mobChartFill:$('mob-chart-fill')
 };
 const mobPips=Array.from({length:8},(_,i)=>$(`mp${i}`));
@@ -1183,23 +1168,26 @@ function syncMobileOverlay(){
     el.mobMultVal.textContent=el.multValue.textContent;
     el.mobMultVal.className=el.multValue.className;
   }
-  // heat text
+  // heat text + pips
   if(el.mobHeatStage){el.mobHeatStage.textContent=el.heatStageText.textContent;el.mobHeatStage.className=el.heatStageText.className;}
-  if(el.mobHeatSub)el.mobHeatSub.textContent=el.heatSubText?el.heatSubText.textContent:'';
-  // heat pips mirror
   const srcPips=Array.from({length:8},(_,i)=>$(`hp${i}`));
   mobPips.forEach((p,i)=>{if(srcPips[i])p.className=srcPips[i].className.replace('heat-pip','mob-pip');});
   // stats
   if(el.mobValEscaped)el.mobValEscaped.textContent=el.valEscaped.textContent;
   if(el.mobValInside)el.mobValInside.textContent=el.valInside.textContent;
-  if(el.mobValEscapedPct)el.mobValEscapedPct.textContent=(el.valEscapedPct?el.valEscapedPct.textContent:'').replace(' of crew','');
-  if(el.mobValInsidePct)el.mobValInsidePct.textContent=(el.valInsidePct?el.valInsidePct.textContent:'').replace(' of crew','');
   // exits/sec
   if(el.mobExitsVal&&el.escapesPmVal)el.mobExitsVal.textContent=el.escapesPmVal.textContent;
-  // chart mirror
+  // chart mirror — scale path from 120×55 to 64×24
   if(el.mobChartLine&&el.activityLine){
-    el.mobChartLine.setAttribute('d',el.activityLine.getAttribute('d')||'M0,28 L80,28');
-    el.mobChartFill.setAttribute('d',(el.activityFill.getAttribute('d')||'M0,28 L80,28').replace(/L\d+,\d+ Z/,'L80,28 Z'));
+    const src=el.activityLine.getAttribute('d')||'';
+    if(src&&src!=='M0,55 L120,55'){
+      // rescale x by 64/120, y by 24/55
+      const scaled=src.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g,(_,x,y)=>`${(parseFloat(x)*64/120).toFixed(1)},${(parseFloat(y)*24/55).toFixed(1)}`);
+      el.mobChartLine.setAttribute('d',scaled);
+      const fillSrc=el.activityFill.getAttribute('d')||'';
+      const scaledFill=fillSrc.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g,(_,x,y)=>`${(parseFloat(x)*64/120).toFixed(1)},${(parseFloat(y)*24/55).toFixed(1)}`);
+      el.mobChartFill.setAttribute('d',scaledFill);
+    }
   }
 }
 
