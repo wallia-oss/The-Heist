@@ -82,9 +82,9 @@ body{display:flex;justify-content:center;align-items:flex-start}
   /* ── SCENE: video hero, fills width at 3:4 ratio ── */
   #scene-wrap{
     width:100%;
-    height:calc(100dvh - 220px);
+    height:calc(var(--vh, 1vh) * 100 - 220px);
     min-height:240px;
-    max-height:58dvh;
+    max-height:calc(var(--vh, 1vh) * 58);
     flex-shrink:0;
     background:#070707;
     position:relative;overflow:hidden;z-index:5
@@ -110,7 +110,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   /* Radial darkening behind multiplier */
   #scene-wrap::after{
     content:\'\';position:absolute;inset:0;z-index:4;pointer-events:none;
-    background:radial-gradient(ellipse 65% 40% at 50% 52%,rgba(6,7,14,0.6) 0%,transparent 100%)
+    background:radial-gradient(ellipse 55% 35% at 50% 50%,rgba(6,7,14,0.35) 0%,transparent 100%)
   }
 
   /* ── TOP-LEFT: live badge on video ── */
@@ -489,7 +489,7 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #room[data-phase="join"] #mobile-history-panel{display:none !important}
   #room[data-phase="join"] #markets-row{display:block !important;max-height:200px;overflow-y:auto}
   #room[data-phase="join"] #scene-wrap{
-    height:calc(100dvh - 375px) !important;
+    height:calc(var(--vh, 1vh) * 100 - 375px) !important;
     max-height:none !important;
     min-height:200px !important
   }
@@ -2722,6 +2722,16 @@ if(el.soundToggle){
 }
 document.addEventListener('pointerdown',unlockAudio,{once:false});
 document.addEventListener('click',unlockAudio,{once:false});
+
+// Safari viewport height fix
+function setVH(){
+  const vh=window.innerHeight*0.01;
+  document.documentElement.style.setProperty('--vh',vh+'px');
+  if(window.innerWidth<768){const room=document.getElementById('room');if(room)room.style.height=window.innerHeight+'px';}
+}
+setVH();
+window.addEventListener('resize',setVH);
+window.addEventListener('orientationchange',()=>{setTimeout(setVH,200);});
 
 setMobileTab('live');updateSoundToggle();updateBalance();startJoin();
 if(el.mobSoundBtn){el.mobSoundBtn.addEventListener('click',e=>{e.stopPropagation();setSoundEnabled(!soundEnabled);if(el.mobSoundBtn)el.mobSoundBtn.textContent=soundEnabled?'🔊':'🔇';});}
