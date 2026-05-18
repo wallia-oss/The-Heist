@@ -310,15 +310,13 @@ body{display:flex;justify-content:center;align-items:flex-start}
   #room[data-phase="live"] #scene-live{object-position:center 48%}
   #room[data-phase="live"] #feed-activity-row{height:86px}
   #room[data-phase="live"] #live-bets-panel{
-    max-height:clamp(112px,22dvh,176px);
-    overflow-y:auto;
-    scrollbar-width:thin
+    max-height:none;
+    overflow:visible
   }
-  #room[data-phase="live"] #live-bets-panel::-webkit-scrollbar{width:3px}
-  #room[data-phase="live"] #live-bets-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.22);border-radius:2px}
   #room[data-phase="live"] .live-bet-row{padding-top:4px;padding-bottom:4px}
-  #room[data-phase="live"] #live-bets-list.many-bets .live-bet-row{font-size:9px;padding-top:3px;padding-bottom:3px}
+  #room[data-phase="live"] #live-bets-list.many-bets .live-bet-row{font-size:9px;padding-top:2px;padding-bottom:2px;line-height:1.15}
   #room[data-phase="live"] #live-bets-list.many-bets .bet-value{font-size:11px}
+  #room[data-phase="live"] #live-bets-list.many-bets .live-bet-row span:first-child{white-space:nowrap}
   #room[data-phase="live"] #live-bets-title{padding-top:4px;padding-bottom:2px}
 
   /* Feed + bet tracker row */
@@ -1816,7 +1814,7 @@ function updateLiveBetsPanel(){
   if(!el.liveBetsList)return;
   el.liveBetsList.innerHTML='';
   const activeSideBets=state.marketBets.filter(Boolean).length;
-  el.liveBetsList.classList.toggle('many-bets',activeSideBets>=4);
+  el.liveBetsList.classList.toggle('many-bets',activeSideBets>=3);
   const main=document.createElement('div');
   main.className='live-bet-row main';
   const mainValue=state.hasJoined
