@@ -13,11 +13,12 @@ body{
     radial-gradient(circle at 50% 12%,rgba(200,146,10,.14),transparent 34%),
     linear-gradient(180deg,#0b0b11 0%,#07050a 100%);
   color:#f4ead0;display:flex;align-items:center;justify-content:center;
-  font-family:'DM Mono',monospace
+  font-family:'DM Mono',monospace;overflow-x:hidden
 }
 .screen{width:min(92vw,390px);display:flex;flex-direction:column;align-items:center}
 .wrap{width:100%;max-width:360px}
 svg{width:100%;display:block;filter:drop-shadow(0 18px 28px rgba(0,0,0,.45))}
+.content-panel{width:100%;display:flex;flex-direction:column;align-items:center}
 .splash-copy{margin:10px auto 0;max-width:350px;text-align:center}
 .kicker{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#9b8b62}
 h1{font-family:'Bebas Neue',sans-serif;font-size:58px;line-height:.92;letter-spacing:.13em;color:#f8df9a;text-shadow:0 0 22px rgba(200,146,10,.18);margin:5px 0 2px}
@@ -33,12 +34,57 @@ button,.enter-link{border-radius:5px;font-family:'DM Mono',monospace;font-size:1
 .enter-link{background:#00e070;color:#000;border:none;padding:11px 26px;box-shadow:0 0 20px rgba(0,224,112,.18)}
 button{background:transparent;color:#9a927f;border:1px solid rgba(255,255,255,.13);padding:10px 12px}
 .svg-title,.svg-tagline{display:none}
-@media(max-height:720px){
+@media(max-width:899px) and (max-height:720px){
   body{padding:14px}
   .wrap{max-width:310px}
   h1{font-size:48px}
   .info-grid{margin-top:10px}
   .info-card{padding:7px 9px}
+}
+@media(min-width:900px){
+  body{
+    padding:clamp(28px,4vw,64px);
+    background:
+      radial-gradient(circle at 32% 42%,rgba(200,146,10,.16),transparent 28%),
+      radial-gradient(circle at 70% 52%,rgba(0,224,112,.05),transparent 30%),
+      linear-gradient(180deg,#0b0b11 0%,#07050a 100%);
+    overflow:hidden
+  }
+  .screen{
+    width:min(1180px,92vw);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(46px,6vw,88px);align-items:start
+  }
+  .wrap,.content-panel{min-height:0}
+  .wrap{
+    max-width:none;width:100%;display:block;
+    background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01));
+    overflow:hidden
+  }
+  svg{width:100%;height:auto;filter:drop-shadow(0 26px 44px rgba(0,0,0,.5))}
+  .content-panel{align-items:stretch;justify-content:flex-start;padding:clamp(18px,2.4vh,28px) 0 0}
+  .splash-copy{margin:0;text-align:left;max-width:none}
+  .kicker{font-size:10px}
+  h1{font-size:clamp(78px,6.4vw,112px);letter-spacing:.11em;margin:8px 0 0}
+  .subtitle{font-size:24px;margin-bottom:18px}
+  .splash-copy p{margin:0;max-width:450px;font-size:14px;line-height:1.65}
+  .splash-copy .fine{font-size:11px;margin-top:12px}
+  .info-grid{grid-template-columns:1fr 1fr;gap:10px;margin:22px 0 0;max-width:480px}
+  .info-card{padding:13px 14px;min-height:108px}
+  .info-card strong{font-size:18px}
+  .info-card span{font-size:11px;line-height:1.55}
+  .actions{margin-top:22px;justify-content:flex-start}
+  .enter-link{padding:13px 34px}
+  button{padding:12px 14px}
+}
+@media(min-width:900px) and (max-height:760px){
+  .screen{gap:48px}
+  .content-panel{padding:24px 0}
+  h1{font-size:74px}
+  .subtitle{font-size:21px;margin-bottom:12px}
+  .splash-copy p{font-size:12px}
+  .info-grid{margin-top:14px}
+  .info-card{min-height:88px;padding:10px 12px}
 }
 </style>
 </head>
@@ -67,7 +113,7 @@ button{background:transparent;color:#9a927f;border:1px solid rgba(255,255,255,.1
   └─────────────────────────┘  y=420
 -->
 
-<svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 320 358" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <!-- Backgrounds -->
   <linearGradient id="bgTop" x1="0" y1="0" x2="0" y2="1">
@@ -112,7 +158,7 @@ button{background:transparent;color:#9a927f;border:1px solid rgba(255,255,255,.1
   <filter id="gBlue"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   <filter id="gRed"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   <filter id="gWht"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  <clipPath id="clip"><rect width="320" height="420"/></clipPath>
+  <clipPath id="clip"><rect width="320" height="358"/></clipPath>
 </defs>
 
 <g clip-path="url(#clip)">
@@ -251,6 +297,7 @@ button{background:transparent;color:#9a927f;border:1px solid rgba(255,255,255,.1
   fill="url(#titleG)">THE HEIST</text>
 
 <!-- ═══════════ SKY GAP (295–310) ═══════════ -->
+<g class="road-zone" transform="translate(0,-62)">
 <rect x="0" y="295" width="320" height="15" fill="#10111a"/>
 
 <!-- ═══════════ ROAD (310–372) ═══════════ -->
@@ -444,38 +491,33 @@ button{background:transparent;color:#9a927f;border:1px solid rgba(255,255,255,.1
 <rect x="0" y="300" width="320" height="120" fill="#ff3838" opacity="0">
   <animate attributeName="opacity" values="0;0;.028;0;0;.032" dur=".36s" begin=".22s" repeatCount="indefinite"/>
 </rect>
+</g>
 
 </g>
 </svg>
 </div>
-<div class="splash-copy">
-  <div class="kicker">Live Vault</div>
-  <h1>The Heist</h1>
-  <div class="subtitle">Beat the breach</div>
-  <p>Join before the vault opens. The multiplier climbs while the raid unfolds. Cash out before the police breach the vault.</p>
-  <div class="info-grid">
-    <div class="info-card">
-      <strong>Crew markets</strong>
-      <span>Back side calls like how many escape, whether the raid hits fast, or how the featured crew perform.</span>
+<section class="content-panel">
+  <div class="splash-copy">
+    <div class="kicker">Live Vault</div>
+    <h1>The Heist</h1>
+    <div class="subtitle">Beat the breach</div>
+    <p>Join before the vault opens. The multiplier climbs while the raid unfolds. Cash out before the police breach the vault.</p>
+    <div class="info-grid">
+      <div class="info-card">
+        <strong>Crew markets</strong>
+        <span>Back side calls like how many of the game players escape, whether the raid hits fast, or how the featured crew perform.</span>
+      </div>
+      <div class="info-card">
+        <strong>Fair round check</strong>
+        <span>After every result, the crash point, salt, and hash are revealed so the outcome can be verified.</span>
+      </div>
     </div>
-    <div class="info-card">
-      <strong>Fair round check</strong>
-      <span>After every result, the crash point, salt, and hash are revealed so the outcome can be verified.</span>
-    </div>
+    <p class="fine">Simple rule: take the money before the vault goes wrong.</p>
   </div>
-  <p class="fine">Simple rule: take the money before the vault goes wrong.</p>
-</div>
-<div class="actions">
-  <a class="enter-link" href="the_heist_index.html">Enter Heist</a>
-  <button onclick="replay()" type="button">Replay</button>
-</div>
+  <div class="actions">
+    <a class="enter-link" href="the_heist_index.html">Enter Heist</a>
+  </div>
+</section>
 </main>
-<script>
-function replay(){
-  const s=document.querySelector('svg');
-  const c=s.cloneNode(true);
-  s.parentNode.replaceChild(c,s);
-}
-</script>
 </body>
 </html>
