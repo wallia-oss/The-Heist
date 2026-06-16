@@ -1060,12 +1060,13 @@ body{display:flex;justify-content:center;align-items:flex-start}
   <!-- VAULT SCENE -->
   <div id="scene-wrap">
 
-    <!-- SCENE MEDIA: closed image + opening/live video assets -->
+    <!-- SCENE MEDIA: closed image + opening/entering/live video assets -->
     <img id="scene-closed" class="scene-layer scene-media" src="assets/scene/closed-vault.png" alt="Closed vault">
-    <video id="scene-opening" class="scene-layer scene-media hidden" src="assets/scene/vault-opening.mp4" muted playsinline preload="auto"></video>
-    <video id="scene-live" class="scene-layer scene-media hidden" src="assets/scene/vault-robbers.mp4" muted playsinline loop preload="auto"></video>
-    <video id="scene-catch" class="scene-layer scene-media hidden" src="assets/scene/fbi-catch.mp4" muted playsinline preload="auto"></video>
-    <video id="scene-cleared" class="scene-layer scene-media hidden" src="assets/scene/vault-robbers.mp4" muted playsinline preload="auto"></video>
+    <video id="scene-opening" class="scene-layer scene-media hidden" src="assets/scene/vault-opening.mp4?v=h264" muted playsinline preload="auto"></video>
+    <video id="scene-entering" class="scene-layer scene-media hidden" src="assets/scene/vault-robbers-entering.mp4?v=h264" muted playsinline preload="auto"></video>
+    <video id="scene-live" class="scene-layer scene-media hidden" src="assets/scene/vault-robbers-loop.mp4?v=h264" muted playsinline loop preload="auto"></video>
+    <video id="scene-catch" class="scene-layer scene-media hidden" muted playsinline preload="auto"></video>
+    <video id="scene-cleared" class="scene-layer scene-media hidden" src="assets/scene/vault-cleared-police-arrive-too-late.mp4?v=h264" muted playsinline preload="auto"></video>
 
     <div id="scene-heat-wash"></div>
     <div id="scene-vignette"></div>
@@ -1423,7 +1424,7 @@ const CREW_MEMBERS=[
   {name:'SilkDagger',icon:'🗡️',target:2.8},{name:'ColdBlood',icon:'🧊',target:3.1},
   {name:'VenomWasp',icon:'🐝',target:1.9},{name:'AceKarma',icon:'🃏',target:6.0}
 ];
-const CONFIG={rtp:0.95,maxMultiplier:50,maxPlayerCount:1000,minPlayerCount:880,playerCount:1000,defaultStake:10,avgCrewStake:85,joinDurationMs:10000,openingDelayMs:5200,resultDurationMs:10500,stageRandomness:{skipStageChance:0.18,fakeSpikeChance:0.14},vaultClearMinMult:35,vaultClearChance:0.08,lastPlayerThresholds:[100,50,25,10,3,1]};
+const CONFIG={rtp:0.95,maxMultiplier:50,maxPlayerCount:1000,minPlayerCount:880,playerCount:1000,defaultStake:10,avgCrewStake:85,joinDurationMs:10000,openingDelayMs:13000,resultDurationMs:10500,stageRandomness:{skipStageChance:0.18,fakeSpikeChance:0.14},vaultClearMinMult:35,vaultClearChance:0.08,lastPlayerThresholds:[100,50,25,10,3,1]};
 const POLICE_STAGES=[
   {minMult:1.0,text:'UNDETECTED',barStep:0,heat:0},
   {minMult:1.5,text:'ALARM RAISED',barStep:1,heat:25},
@@ -1432,10 +1433,13 @@ const POLICE_STAGES=[
   {minMult:8.0,text:'SWAT CLOSING',barStep:3,heat:100}
 ];
 const CRASH_ENTRIES=[
-  {icon:'🚁',text:'SWAT ENTERED FROM THE ROOF'},{icon:'💥',text:'DOOR BLOWN OFF THE HINGES'},
-  {icon:'🔦',text:'ARMED UNIT THROUGH THE SKYLIGHT'},{icon:'🚨',text:'K9 UNIT REACHED THE VAULT'},
-  {icon:'🪖',text:'TACTICAL TEAM RAPPELLED IN'},{icon:'🔒',text:'UNDERCOVER AGENT OPENED THE VAULT'},
-  {icon:'🛻',text:'BATTERING RAM TOOK THE DOOR'},{icon:'🔴',text:'SNIPERS LOCKED ALL EXITS'}
+  {icon:'💥',text:'DOOR BLOWN OFF THE HINGES',video:'assets/scene/door-blown-off-hinges.mp4?v=h264'},
+  {icon:'🔦',text:'ARMED UNIT THROUGH THE SKYLIGHT',video:'assets/scene/armed-unit-through-skylight.mp4?v=h264'},
+  {icon:'🚨',text:'K9 UNIT REACHED THE VAULT',video:'assets/scene/k9-unit-reached-vault.mp4?v=h264'},
+  {icon:'🪖',text:'TACTICAL TEAM RAPPELLED IN',video:'assets/scene/tactical-team-rappelled-in.mp4?v=h264'},
+  {icon:'🔒',text:'UNDERCOVER AGENT INSIDE THE SAFE',video:'assets/scene/undercover-agent-from-inside-safe.mp4?v=h264'},
+  {icon:'🔴',text:'LASER BEAMS ACTIVATED',video:'assets/scene/crash-laser.mp4?v=h264'},
+  {icon:'⛔',text:'SHUTTER DEPLOYED - LOCKED IN',video:'assets/scene/shutter-deployed-locked-in.mp4?v=h264'}
 ];
 const PLAYER_NAMES=['Ghost','Blade','Wraith','Fox','Snake','Spider','Hawk','Shadow','Wolf','Raven','Lynx','Viper','Cobra','Eagle','Titan','Neon','Cipher','Frost','Storm','Blaze','Sable','Onyx','Kira','Zane','Dex','Milo','Cass','Rex','Yuki','Luca'];
 const PLAYER_TYPES=[{share:0.25,min:1.20,max:1.70},{share:0.35,min:1.70,max:2.80},{share:0.25,min:2.80,max:5.50},{share:0.10,min:5.50,max:10.0},{share:0.05,min:10.0,max:50.0}];
@@ -1479,7 +1483,7 @@ const el={
   settlementMain:$('settlement-main'),settlementSub:$('settlement-sub'),settlementSide:$('settlement-side'),marketDetail:$('result-market-detail'),
   liveBetsList:$('live-bets-list'),
   mobileHistoryStrip:$('mobile-history-strip'),mobileSeedHash:$('mobile-seed-hash'),
-  sceneClosed:$('scene-closed'),sceneOpening:$('scene-opening'),sceneLive:$('scene-live'),sceneCatch:$('scene-catch'),sceneCleared:$('scene-cleared'),
+  sceneClosed:$('scene-closed'),sceneOpening:$('scene-opening'),sceneEntering:$('scene-entering'),sceneLive:$('scene-live'),sceneCatch:$('scene-catch'),sceneCleared:$('scene-cleared'),
   sceneHeatWash:$('scene-heat-wash'),stageIndicator:$('stage-indicator'),roundNum:$('round-num'),sceneEyeCount:$('scene-eye-count'),
   yourBetVal:$('your-bet-val'),escapesPmVal:$('escapes-pm-val'),activityLine:$('activity-line'),activityFill:$('activity-fill'),activitySubtitle:$('activity-subtitle'),betTracker:$('bet-tracker'),
   // mobile overlay elements
@@ -2032,14 +2036,17 @@ function updateChart(latestEpm){
 }
 
 function setScene(mode){
-  el.sceneClosed.classList.add('hidden');el.sceneOpening.classList.add('hidden');el.sceneLive.classList.add('hidden');el.sceneCatch.classList.add('hidden');
+  el.sceneClosed.classList.add('hidden');el.sceneOpening.classList.add('hidden');if(el.sceneEntering)el.sceneEntering.classList.add('hidden');el.sceneLive.classList.add('hidden');el.sceneCatch.classList.add('hidden');
   if(el.sceneCleared)el.sceneCleared.classList.add('hidden');
-  [el.sceneOpening,el.sceneLive,el.sceneCatch,el.sceneCleared].forEach(v=>{if(v&&v.pause){try{v.pause();if(!(mode==='live'&&v===el.sceneLive)&&!(mode==='catch'&&v===el.sceneCatch)&&!(mode==='cleared'&&v===el.sceneCleared))v.currentTime=0;}catch(e){}}});
+  [el.sceneOpening,el.sceneEntering,el.sceneLive,el.sceneCatch,el.sceneCleared].forEach(v=>{if(v&&v.pause){try{v.pause();if(!(mode==='entering'&&v===el.sceneEntering)&&!(mode==='live'&&v===el.sceneLive)&&!(mode==='catch'&&v===el.sceneCatch)&&!(mode==='cleared'&&v===el.sceneCleared))v.currentTime=0;}catch(e){}}});
   if(mode==='closed'){
     el.sceneClosed.classList.remove('hidden');
   }else if(mode==='opening'){
     el.sceneOpening.classList.remove('hidden');
     if(el.sceneOpening&&el.sceneOpening.play){try{el.sceneOpening.currentTime=0;el.sceneOpening.play().catch(()=>{});}catch(e){}}
+  }else if(mode==='entering'){
+    el.sceneEntering.classList.remove('hidden');
+    if(el.sceneEntering&&el.sceneEntering.play){try{el.sceneEntering.currentTime=0;el.sceneEntering.play().catch(()=>{});}catch(e){}}
   }else if(mode==='live'){
     el.sceneLive.classList.remove('hidden');
     if(el.sceneLive&&el.sceneLive.play){try{el.sceneLive.play().catch(()=>{});}catch(e){}}
@@ -2547,17 +2554,25 @@ function startJoin(){
 }
 
 function waitForVaultOpeningToFinish(){
-  const v=el.sceneOpening;
   let started=false;
   const beginLive=()=>{
     if(started||state.phase!=='join')return;
     started=true;clearTimeout(state.openingLiveTimer);startLive();
   };
-  if(!v||!v.addEventListener){state.openingLiveTimer=setTimeout(beginLive,CONFIG.openingDelayMs);return;}
-  if(v.ended){beginLive();return;}
-  v.addEventListener('ended',beginLive,{once:true});
-  const remaining=Number.isFinite(v.duration)?Math.max(0,(v.duration-v.currentTime)*1000):CONFIG.openingDelayMs;
-  state.openingLiveTimer=setTimeout(beginLive,remaining+500);
+  const waitForVideo=(video,next,fallbackMs)=>{
+    clearTimeout(state.openingLiveTimer);
+    if(!video||!video.addEventListener){state.openingLiveTimer=setTimeout(next,fallbackMs);return;}
+    if(video.ended){next();return;}
+    video.addEventListener('ended',next,{once:true});
+    const remaining=Number.isFinite(video.duration)?Math.max(0,(video.duration-video.currentTime)*1000):fallbackMs;
+    state.openingLiveTimer=setTimeout(next,remaining+500);
+  };
+  const beginEntering=()=>{
+    if(started||state.phase!=='join')return;
+    setScene('entering');
+    waitForVideo(el.sceneEntering,beginLive,8500);
+  };
+  waitForVideo(el.sceneOpening,beginEntering,8500);
 }
 
 function startLive(){
@@ -2685,8 +2700,9 @@ function triggerVaultCleared(mult){
 function triggerCrash(mult){
   state.phase='crashed';cancelAnimationFrame(state.animFrame);clearInterval(flashInt);
   catchAll();catchCrewAvatars();stopAmbient();stopSiren();stopRumble();playBreach();
-  setScene('catch');
   const e=CRASH_ENTRIES[Math.floor(Math.random()*CRASH_ENTRIES.length)];state.lastCrashEntry=e;
+  if(el.sceneCatch&&e.video&&el.sceneCatch.src!==e.video){el.sceneCatch.src=e.video;el.sceneCatch.load();}
+  setScene('catch');
   el.crashOverlay.classList.add('flash');el.room.classList.add('shake');
   setTimeout(()=>{el.crashOverlay.classList.remove('flash');el.room.classList.remove('shake');},300);
   el.crashEntryIcon.textContent=e.icon;el.crashEntryText.textContent=e.text;el.crashEntryOverlay.style.display='flex';
